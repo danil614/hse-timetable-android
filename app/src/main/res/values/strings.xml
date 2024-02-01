@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">HSE Application</string>
+    <string name="app_name">Timetable for HSE FE</string>
+    <string name="button_student">РАСПИСАНИЕ ДЛЯ СТУДЕНТОВ</string>
+    <string name="button_teacher">РАСПИСАНИЕ ДЛЯ ПРЕПОДАВАТЕЛЯ</string>
 </resources>
