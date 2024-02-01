@@ -3,9 +3,11 @@ package org.hse.android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +29,14 @@ public class DemoActivity extends AppCompatActivity {
         result = findViewById(R.id.result);
 
         button.setOnClickListener(v -> clickButton());
-
         button2.setOnClickListener(v -> clickButton2());
     }
 
     private void clickButton() {
-        Integer count = validateNumber(-10000, 10000);
+        Integer count = validateNumber(0, 10000);
 
         if (count == null) {
+            showToast();
             return;
         }
 
@@ -50,10 +52,15 @@ public class DemoActivity extends AppCompatActivity {
     }
 
     private void clickButton2() {
-        int count = validateNumber(-30, 30);
+        Integer count = validateNumber(1, 30);
+
+        if (count == null) {
+            showToast();
+            return;
+        }
 
         // init list
-        int mul = 1;
+        long mul = 1;
 
         for (int i = 1; i <= count; i++) {
             if (i % 2 == 0) {
@@ -67,7 +74,7 @@ public class DemoActivity extends AppCompatActivity {
     private Integer validateNumber(int min, int max) {
         String numberVal = number.getText().toString();
         if (numberVal.isEmpty()) {
-            numberVal = "0";
+            return null;
         }
         int value = Integer.parseInt(numberVal);
 
@@ -76,5 +83,11 @@ public class DemoActivity extends AppCompatActivity {
         } else {
             return value;
         }
+    }
+
+    private void showToast() {
+        Toast toast = Toast.makeText(this, "Число выходит за границы диапазона!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
