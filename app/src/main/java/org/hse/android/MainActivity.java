@@ -2,6 +2,7 @@ package org.hse.android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showStudent() {
         showToast("Страница для студентов");
+
+//        Intent intent = new Intent(this, StudentActivity.class);
+//        startActivity(intent);
     }
 
     private void showTeacher() {
