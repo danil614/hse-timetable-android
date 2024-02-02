@@ -2,4 +2,10 @@
     <string name="app_name">Timetable for HSE FE</string>
     <string name="button_student">РАСПИСАНИЕ ДЛЯ СТУДЕНТОВ</string>
     <string name="button_teacher">РАСПИСАНИЕ ДЛЯ ПРЕПОДАВАТЕЛЯ</string>
+
+    <string name="label_group">Выберите группу:</string>
+    <string name="label_time">Сейчас:</string>
+
+    <string name="timetable_day">РАСПИСАНИЕ НА ДЕНЬ</string>
+    <string name="timetable_week">РАСПИСАНИЕ НА НЕДЕЛЮ</string>
 </resources>

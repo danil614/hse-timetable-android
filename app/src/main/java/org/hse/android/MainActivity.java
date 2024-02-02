@@ -27,14 +27,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showStudent() {
-        showToast("Страница для студентов");
+        //showToast("Страница для студентов");
 
-//        Intent intent = new Intent(this, StudentActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, StudentActivity.class);
+        startActivity(intent);
     }
 
     private void showTeacher() {
-        showToast("Страница для преподавателей");
+        //showToast("Страница для преподавателей");
+
+        Intent intent = new Intent(this, TeacherActivity.class);
+        startActivity(intent);
     }
 
     private void showToast(String message) {
