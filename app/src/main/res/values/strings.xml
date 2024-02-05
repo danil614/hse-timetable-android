@@ -4,6 +4,7 @@
     <string name="button_teacher">РАСПИСАНИЕ ДЛЯ ПРЕПОДАВАТЕЛЯ</string>
 
     <string name="label_group">Выберите группу:</string>
+    <string name="label_teacher">Выберите преподавателя:</string>
     <string name="label_time">Сейчас:</string>
 
     <string name="timetable_day">РАСПИСАНИЕ НА ДЕНЬ</string>

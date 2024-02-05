@@ -1,5 +1,6 @@
 package org.hse.android;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -30,7 +31,7 @@ public class StudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-//        final Spinner spinner = findViewById(R.id.groupList);
+        final Spinner spinner = findViewById(R.id.groupList);
 
         List<Group> groups = new ArrayList<>();
         initGroupList(groups);
@@ -38,26 +39,26 @@ public class StudentActivity extends AppCompatActivity {
         ArrayAdapter<?> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-//        spinner.setAdapter(adapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            public void onItemSelected(AdapterView<?> parent,
-//                                       View itemSelected, int selectedItemPosition, long selectedId) {
-//                Object item = adapter.getItem(selectedItemPosition);
-//                Log.d(LOG_TAG, "selectedItem: " + item);
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+                Object item = adapter.getItem(selectedItemPosition);
+                Log.d(LOG_TAG, "selectedItem: " + item);
+            }
 
-//        time = findViewById(R.id.time);
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        time = findViewById(R.id.time);
         initTime();
 
-//        status = findViewById(R.id.status);
-//        subject = findViewById(R.id.subject);
-//        cabinet = findViewById(R.id.cabinet);
-//        corp = findViewById(R.id.corp);
-//        teacher = findViewById(R.id.teacher);
+        status = findViewById(R.id.status);
+        subject = findViewById(R.id.subject);
+        cabinet = findViewById(R.id.cabinet);
+        corp = findViewById(R.id.corp);
+        teacher = findViewById(R.id.teacher);
 
         initData();
     }
@@ -80,6 +81,7 @@ public class StudentActivity extends AppCompatActivity {
             this.id = id;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return name;
@@ -111,8 +113,9 @@ public class StudentActivity extends AppCompatActivity {
 
     private void initTime() {
         Date currentTime = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        time.setText(simpleDateFormat.format(currentTime));
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm, EEEE", new Locale("ru", "RU"));
+        String formattedTime = simpleTimeFormat.format(currentTime);
+        time.setText(formattedTime);
     }
 
     private void initData() {
