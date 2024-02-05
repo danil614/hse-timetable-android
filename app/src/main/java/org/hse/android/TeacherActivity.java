@@ -3,10 +3,21 @@ package org.hse.android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class TeacherActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "HSE_DEBUG";
     private TextView time;
     private TextView status;
     private TextView subject;
@@ -23,45 +34,52 @@ public class TeacherActivity extends AppCompatActivity {
 
         List<StudentActivity.Group> groups = new ArrayList<>();
         initGroupList(groups);
-        ArrayAdapter<?> adapter = new ArrayAdapter<>(context:
-        this, android.R.layout.simple_spinner_item, groups);
+
+        ArrayAdapter<?> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                              public void onItemSelected(AdapterView<?> parent,
-                                          }
-                View itemSelected, int selectedItemPosition, long selectedId){
-            Object item = adapter.getItem(selectedItemPosition);
-            Log.d(TAG, msg:"selectedItem: " + item);
-            public void onNothingSelected (AdapterView < ? > parent){
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+                Object item = adapter.getItem(selectedItemPosition);
+                Log.d(LOG_TAG, "selectedItem: " + item);
             }
-        }
-    });
-    time =
 
-    findViewById(R.id.time);
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
-    initTime();
+        time = findViewById(R.id.time);
+        initTime();
 
-    status=
+        status = findViewById(R.id.status);
+        subject = findViewById(R.id.subject);
+        cabinet = findViewById(R.id.cabinet);
+        corp = findViewById(R.id.corp);
+        teacher = findViewById(R.id.teacher);
 
-    findViewById(R.id.status);
+        initData();
+    }
 
-    subject =
+    private void initGroupList(List<StudentActivity.Group> groups) {
+        groups.add(new StudentActivity.Group(1, "Преподаватель 1"));
+        groups.add(new StudentActivity.Group(2, "Преподаватель 2"));
+    }
 
-    findViewById(R.id.subject);
+    private void initTime() {
+        Date currentTime = new Date();
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm, EEEE", new Locale("ru", "RU"));
+        String formattedTime = simpleTimeFormat.format(currentTime);
+        time.setText(formattedTime);
+    }
 
-    cabinet =
 
-    findViewById(R.id.cabinet);
-
-    corp =
-
-    findViewById(R.id.corp);
-
-    teacher =
-
-    findViewById(R.id.teacher);
-
-    initData();
+    private void initData() {
+        status.setText("Нет пар");
+        subject.setText("Дисциплина");
+        cabinet.setText("Kабинет");
+        corp.setText("Корпус");
+        teacher.setText("Преподаватель");
+    }
 }
