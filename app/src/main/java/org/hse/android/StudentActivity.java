@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class StudentActivity extends AppCompatActivity {
-    private static final String LOG_TAG = "HSE_DEBUG";
+    private static final String LOG_TAG = "LOG_TAG";
     private TextView time;
     private TextView status;
     private TextView subject;

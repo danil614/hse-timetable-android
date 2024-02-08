@@ -9,4 +9,8 @@
     <style name="valueStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/colorPrimaryVariant</item>
     </style>
+
+    <style name="buttonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/colorPrimaryVariant</item>
+    </style>
 </resources>

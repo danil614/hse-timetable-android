@@ -1,16 +1,28 @@
 package org.hse.android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
-    private static final String LOG_TAG = "HSE_INFORMATION";
+    private static final String LOG_TAG = "LOG_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
         View buttonStudent = findViewById(R.id.buttonStudent);
         View buttonTeacher = findViewById(R.id.buttonTeacher);
+        View buttonSettings = findViewById(R.id.buttonSettings);
 
         buttonStudent.setOnClickListener(v -> showStudent());
         buttonTeacher.setOnClickListener(v -> showTeacher());
+        buttonSettings.setOnClickListener(v -> showSettings());
 
         Log.i(LOG_TAG, "On Create");
     }
@@ -36,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+    private void showSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
