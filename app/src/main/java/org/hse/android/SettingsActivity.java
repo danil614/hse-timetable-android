@@ -1,11 +1,9 @@
 package org.hse.android;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,49 +12,106 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity implements SensorEventListener {
     private static final String LOG_TAG = "LOG_TAG";
     private static final String PERMISSION = "android.permission.CAMERA";
-    private static final int REQUEST_PERMISSION_CODE = 100;
-    String mCurrentPhotoPath;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String currentPhotoPath;
     private SensorManager sensorManager;
     private Sensor light;
     private TextView sensorLight;
+    private TextView name;
+    private TextView sensorsTextView;
+    private ImageView imageView;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        preferenceManager = new PreferenceManager(this);
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensorLight = findViewById(R.id.sensorLight);
+        imageView = findViewById(R.id.imageViewUser);
+        name = findViewById(R.id.name);
+        sensorsTextView = findViewById(R.id.sensorsTextView);
+        sensorsTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        displaySensorList();
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        // Получаем сохраненное имя
+        name.setText(preferenceManager.getValue("name", ""));
 
         View buttonTakePhoto = findViewById(R.id.buttonTakePhoto);
         buttonTakePhoto.setOnClickListener(v -> checkPermission());
+
+        View buttonSave = findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(v -> saveSettings());
+
+        // Получаем сохраненную картинку пользователя
+        String path = preferenceManager.getValue("path", "");
+        setUserView(path);
     }
 
-    public void checkPermission() {
+    private void displaySensorList() {
+        // Получаем список всех датчиков
+        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        StringBuilder sensorInfo = new StringBuilder();
+
+        // Перебираем все датчики в списке и выводим информацию о них
+        for (Sensor sensor : sensorList) {
+            sensorInfo.append(sensor.getName()).append("\n");
+        }
+
+        // Выводим информацию о датчиках в TextView
+        sensorsTextView.setText(sensorInfo.toString());
+    }
+
+    private void saveSettings() {
+        // Сохраняем имя
+        preferenceManager.saveValue("name", name.getText().toString());
+        // Сохраняем картинку
+        preferenceManager.saveValue("path", currentPhotoPath);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void checkPermission() {
         int permissionCheck = ActivityCompat.checkSelfPermission(this, PERMISSION);
 
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSION)) {
                 showExplanation("Нужно предоставить права",
                         "Для снятия фото нужно предоставить права на фото",
-                        PERMISSION, REQUEST_PERMISSION_CODE);
+                        PERMISSION, REQUEST_IMAGE_CAPTURE);
             } else {
-                requestPermissions(new String[]{PERMISSION}, REQUEST_PERMISSION_CODE);
+                requestPermissions(new String[]{PERMISSION}, REQUEST_IMAGE_CAPTURE);
             }
         } else {
             dispatchTakePictureIntent();
@@ -67,46 +122,76 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create a file to store the image
-            File photoFile = null;
+            File photoFile = createImageFile();
+            Uri photoURI = null;
+
             try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                Log.e(LOG_TAG, "Create file", ex);
+                photoURI = FileProvider.getUriForFile(
+                        this,
+                        getPackageName() + ".provider",
+                        photoFile);
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, "Get Uri for file", ex);
             }
 
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            Log.i(LOG_TAG, "Photo URI: " + photoURI);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-                try {
-                    startActivityForResult(takePictureIntent, REQUEST_PERMISSION_CODE);
-                } catch (ActivityNotFoundException ex) {
-                    Log.e(LOG_TAG, "Start activity", ex);
-                }
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                Log.i(LOG_TAG, "Picture successfully saved: " + takePictureIntent);
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, "Start activity", ex);
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Создание файла с уникальным именем
+    private File createImageFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+        String imageFileName = "IMAGE_USER_VIEW_" + timeStamp + ".jpg";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = new File(storageDir, imageFileName);
 
-        File image = File.createTempFile(
-                imageFileName,  /* префикс */
-                ".jpg",         /* расширение */
-                storageDir      /* директория */
-        );
-
-        // Сохраняем путь для использования с интентом ACTION_VIEW
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        // Сохраняем путь
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    private void showExplanation(String title, String message, String permission, int requestPermissionCode) {
-        showToast(message);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.i(LOG_TAG, "onActivityResult entered: ");
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                setUserView(currentPhotoPath);
+            }
+        }
+    }
+
+    private void setUserView(String path) {
+        if (path == null || path.isEmpty()) {
+            return;
+        }
+
+        Bitmap imgBitmap = BitmapFactory.decodeFile(path);
+        imageView.setImageBitmap(imgBitmap);
+    }
+
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, id) -> requestPermission(permission, permissionRequestCode));
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{permissionName}, permissionRequestCode);
     }
 
     private void showToast(String message) {

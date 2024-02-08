@@ -12,4 +12,8 @@
     <string name="timetable_week">РАСПИСАНИЕ НА НЕДЕЛЮ</string>
 
     <string name="button_take_photo">СДЕЛАТЬ ФОТО</string>
+    <string name="button_save">СОХРАНИТЬ</string>
+    <string name="label_image">Укажите фото:</string>
+    <string name="label_name">Укажите ваше имя</string>
+    <string name="label_sensor">Текущая освещенность:</string>
 </resources>
