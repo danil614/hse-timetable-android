@@ -112,17 +112,26 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     private void initTime() {
+        time.setText(getFormattedTimeDate());
+    }
+
+    public static String getFormattedTimeDate() {
         Date currentTime = new Date();
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm, EEEE", new Locale("ru", "RU"));
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", new Locale("ru", "RU"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", new Locale("ru", "RU"));
+
         String formattedTime = simpleTimeFormat.format(currentTime);
-        time.setText(formattedTime);
+        String formattedDate = simpleDateFormat.format(currentTime);
+        formattedDate = formattedDate.substring(0, 1).toUpperCase() + formattedDate.substring(1).toLowerCase();
+
+        return formattedTime + ", " + formattedDate;
     }
 
     private void initData() {
-        status.setText("Нет пар");
-        subject.setText("Дисциплина");
-        cabinet.setText("Кабинет");
-        corp.setText("Корпус");
-        teacher.setText("Преподаватель");
+        status.setText(getString(R.string.status));
+        subject.setText(getString(R.string.subject));
+        cabinet.setText(getString(R.string.cabinet));
+        corp.setText(getString(R.string.corp));
+        teacher.setText(getString(R.string.teacher));
     }
 }

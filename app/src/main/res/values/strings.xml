@@ -8,12 +8,20 @@
     <string name="label_teacher">Выберите преподавателя:</string>
     <string name="label_time">Сейчас:</string>
 
-    <string name="timetable_day">РАСПИСАНИЕ НА ДЕНЬ</string>
-    <string name="timetable_week">РАСПИСАНИЕ НА НЕДЕЛЮ</string>
+    <string name="timetable_day">РАСПИСАНИЕ НА\nДЕНЬ</string>
+    <string name="timetable_week">РАСПИСАНИЕ НА\nНЕДЕЛЮ</string>
 
     <string name="button_take_photo">СДЕЛАТЬ ФОТО</string>
     <string name="button_save">СОХРАНИТЬ</string>
     <string name="label_image">Укажите фото:</string>
     <string name="label_name">Укажите ваше имя</string>
     <string name="label_sensor">Текущая освещенность:</string>
+
+    <string name="label_lux">%.2f lux</string>
+
+    <string name="status">Нет пар</string>
+    <string name="subject">Дисциплина</string>
+    <string name="cabinet">Кабинет</string>
+    <string name="corp">Корпус</string>
+    <string name="teacher">Преподаватель</string>
 </resources>

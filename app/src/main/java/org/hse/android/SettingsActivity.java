@@ -2,6 +2,7 @@ package org.hse.android;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
@@ -30,10 +31,13 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity implements SensorEventListener {
     private static final String LOG_TAG = "LOG_TAG";
     private static final String PERMISSION = "android.permission.CAMERA";
+    private static final String NAME = "name";
+    private static final String PATH = "path";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
     private SensorManager sensorManager;
@@ -64,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         // Получаем сохраненное имя
-        name.setText(preferenceManager.getValue("name", ""));
+        name.setText(preferenceManager.getValue(NAME, ""));
 
         View buttonTakePhoto = findViewById(R.id.buttonTakePhoto);
         buttonTakePhoto.setOnClickListener(v -> checkPermission());
@@ -73,7 +77,8 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         buttonSave.setOnClickListener(v -> saveSettings());
 
         // Получаем сохраненную картинку пользователя
-        String path = preferenceManager.getValue("path", "");
+        String path = preferenceManager.getValue(PATH, "");
+        currentPhotoPath = path;
         setUserView(path);
     }
 
@@ -94,9 +99,9 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
 
     private void saveSettings() {
         // Сохраняем имя
-        preferenceManager.saveValue("name", name.getText().toString());
+        preferenceManager.saveValue(NAME, name.getText().toString());
         // Сохраняем картинку
-        preferenceManager.saveValue("path", currentPhotoPath);
+        preferenceManager.saveValue(PATH, currentPhotoPath);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -120,6 +125,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.i(LOG_TAG, String.valueOf(takePictureIntent.resolveActivity(getPackageManager())));
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = createImageFile();
@@ -147,7 +153,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     }
 
     private File createImageFile() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", new Locale("ru", "RU")).format(new Date());
         String imageFileName = "IMAGE_USER_VIEW_" + timeStamp + ".jpg";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = new File(storageDir, imageFileName);
@@ -170,6 +176,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     }
 
     private void setUserView(String path) {
+        Log.i(LOG_TAG, "setUserView entered: " + path);
         if (path == null || path.isEmpty()) {
             return;
         }
@@ -203,7 +210,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent event) {
         float lux = event.values[0];
-        sensorLight.setText(lux + " lux");
+        sensorLight.setText(getString(R.string.label_lux, lux));
     }
 
     @Override

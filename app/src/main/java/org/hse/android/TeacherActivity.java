@@ -68,18 +68,14 @@ public class TeacherActivity extends AppCompatActivity {
     }
 
     private void initTime() {
-        Date currentTime = new Date();
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm, EEEE", new Locale("ru", "RU"));
-        String formattedTime = simpleTimeFormat.format(currentTime);
-        time.setText(formattedTime);
+        time.setText(StudentActivity.getFormattedTimeDate());
     }
 
-
     private void initData() {
-        status.setText("Нет пар");
-        subject.setText("Дисциплина");
-        cabinet.setText("Kабинет");
-        corp.setText("Корпус");
-        teacher.setText("Преподаватель");
+        status.setText(getString(R.string.status));
+        subject.setText(getString(R.string.subject));
+        cabinet.setText(getString(R.string.cabinet));
+        corp.setText(getString(R.string.corp));
+        teacher.setText(getString(R.string.teacher));
     }
 }
