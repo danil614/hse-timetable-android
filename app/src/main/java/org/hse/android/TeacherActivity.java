@@ -1,7 +1,5 @@
 package org.hse.android;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,11 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class TeacherActivity extends AppCompatActivity {
     private static final String LOG_TAG = "LOG_TAG";
@@ -24,13 +21,14 @@ public class TeacherActivity extends AppCompatActivity {
     private TextView cabinet;
     private TextView corp;
     private TextView teacher;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
 
-        final Spinner spinner = findViewById(R.id.groupList);
+        spinner = findViewById(R.id.groupList);
 
         List<StudentActivity.Group> groups = new ArrayList<>();
         initGroupList(groups);
@@ -60,6 +58,19 @@ public class TeacherActivity extends AppCompatActivity {
         teacher = findViewById(R.id.teacher);
 
         initData();
+
+        View scheduleDay = findViewById(R.id.buttonTimetableDay);
+        scheduleDay.setOnClickListener(v -> showSchedule(ScheduleType.DAY));
+        View scheduleWeek = findViewById(R.id.buttonTimetableWeek);
+        scheduleWeek.setOnClickListener(v -> showSchedule(ScheduleType.WEEK));
+    }
+
+    private void showSchedule(ScheduleType scheduleType) {
+        Object selectedItem = spinner.getSelectedItem();
+        if (!(selectedItem instanceof StudentActivity.Group)) {
+            return;
+        }
+        StudentActivity.showScheduleImpl(this, ScheduleMode.TEACHER, scheduleType, (StudentActivity.Group) selectedItem);
     }
 
     private void initGroupList(List<StudentActivity.Group> groups) {
