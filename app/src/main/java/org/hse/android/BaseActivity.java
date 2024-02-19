@@ -59,6 +59,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         time.setText(simpleDateFormat.format(currentTime));
     }
 
+    protected String getFormattedDate() {
+        if (currentTime == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.forLanguageTag("ru"));
+        return simpleDateFormat.format(currentTime);
+    }
+
     private void parseResponse(Response response) {
         Gson gson = new Gson();
         ResponseBody body = response.body();

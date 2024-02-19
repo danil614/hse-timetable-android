@@ -39,6 +39,9 @@ public class ScheduleActivity extends BaseActivity {
         title = findViewById(R.id.scheduleTitle);
         time = findViewById(R.id.scheduleTime);
 
+        initTime();
+        setTitle();
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -46,8 +49,6 @@ public class ScheduleActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
         initData();
-        setTitle();
-        initTime();
     }
 
     private void setTitle() {
@@ -81,7 +82,7 @@ public class ScheduleActivity extends BaseActivity {
         List<ScheduleItem> list = new ArrayList<>();
 
         ScheduleItemHeader header = new ScheduleItemHeader();
-        header.setTitle("Понедельник, 28 января");
+        header.setTitle(getFormattedDate());
         list.add(header);
 
         ScheduleItem item = new ScheduleItem();
