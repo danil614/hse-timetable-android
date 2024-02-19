@@ -73,7 +73,7 @@ public class TeacherActivity extends AppCompatActivity {
         StudentActivity.showScheduleImpl(this, ScheduleMode.TEACHER, scheduleType, (StudentActivity.Group) selectedItem);
     }
 
-    private void initGroupList(List<StudentActivity.Group> groups) {
+    protected static void initGroupList(List<StudentActivity.Group> groups) {
         groups.add(new StudentActivity.Group(1, "Преподаватель 1"));
         groups.add(new StudentActivity.Group(2, "Преподаватель 2"));
     }

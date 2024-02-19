@@ -1,6 +1,7 @@
 package org.hse.android;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -20,6 +22,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private ScheduleType type;
     private ScheduleMode mode;
     private Integer id;
+    private TextView title;
 
     RecyclerView recyclerView;
     ItemAdapter adapter;
@@ -33,11 +36,40 @@ public class ScheduleActivity extends AppCompatActivity {
         mode = (ScheduleMode) getIntent().getSerializableExtra(ARG_MODE);
         id = getIntent().getIntExtra(ARG_ID, DEFAULT_ID);
 
+        title = findViewById(R.id.scheduleTitle);
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         adapter = new ItemAdapter(this::onScheduleItemClick);
         recyclerView.setAdapter(adapter);
+
+        initData();
+        setTitle();
+    }
+
+    private void setTitle() {
+        String groupName = "";
+        if (mode == ScheduleMode.TEACHER) {
+            List<StudentActivity.Group> groups = new ArrayList<>();
+            StudentActivity.initGroupList(groups);
+            groupName = getGroupNameById(groups);
+        } else if (mode == ScheduleMode.STUDENT) {
+            List<StudentActivity.Group> groups = new ArrayList<>();
+            TeacherActivity.initGroupList(groups);
+            groupName = getGroupNameById(groups);
+        }
+
+        title.setText(groupName);
+    }
+
+    private String getGroupNameById(List<StudentActivity.Group> groups) {
+        for (StudentActivity.Group group : groups) {
+            if (Objects.equals(group.getId(), id)) {
+                return group.getName();
+            }
+        }
+        return "";
     }
 
     private void onScheduleItemClick(ScheduleItem scheduleItem) {

@@ -76,10 +76,10 @@ public class StudentActivity extends AppCompatActivity {
         if (!(selectedItem instanceof Group)) {
             return;
         }
-        showScheduleImpl(this,ScheduleMode.STUDENT, scheduleType, (Group) selectedItem);
+        showScheduleImpl(this, ScheduleMode.STUDENT, scheduleType, (Group) selectedItem);
     }
 
-    static void showScheduleImpl(Context context , ScheduleMode mode, ScheduleType type, Group group) {
+    protected static void showScheduleImpl(Context context, ScheduleMode mode, ScheduleType type, Group group) {
         Intent intent = new Intent(context, ScheduleActivity.class);
         intent.putExtra(ScheduleActivity.ARG_ID, group.getId());
         intent.putExtra(ScheduleActivity.ARG_TYPE, type);
@@ -88,7 +88,7 @@ public class StudentActivity extends AppCompatActivity {
     }
 
 
-    static class Group {
+    protected static class Group {
         private Integer id;
         private String name;
 
@@ -120,7 +120,7 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
-    private void initGroupList(List<Group> groups) {
+    protected static void initGroupList(List<Group> groups) {
         String[] educationalPrograms = {"ПИ", "БИ", "Э", "Ю", "ИЯ"};
         int[] years = {20, 21, 22, 23};
         int[] groupNumbers = {1, 2, 3};
@@ -139,7 +139,7 @@ public class StudentActivity extends AppCompatActivity {
         time.setText(getFormattedTimeDate());
     }
 
-    public static String getFormattedTimeDate() {
+    protected static String getFormattedTimeDate() {
         Date currentTime = new Date();
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", new Locale("ru", "RU"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", new Locale("ru", "RU"));
