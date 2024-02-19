@@ -9,7 +9,19 @@
     <style name="titleStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="typeStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/color_4080ff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="nameStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimaryVariant</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="valueStyle" parent="@android:style/TextAppearance">

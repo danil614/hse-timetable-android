@@ -19,9 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class StudentActivity extends AppCompatActivity {
+public class StudentActivity extends BaseActivity {
     private static final String LOG_TAG = "LOG_TAG";
-    private TextView time;
     private TextView status;
     private TextView subject;
     private TextView cabinet;
@@ -76,14 +75,15 @@ public class StudentActivity extends AppCompatActivity {
         if (!(selectedItem instanceof Group)) {
             return;
         }
-        showScheduleImpl(this, ScheduleMode.STUDENT, scheduleType, (Group) selectedItem);
+        showScheduleImpl(this, ScheduleMode.STUDENT, scheduleType, (Group) selectedItem, currentTime);
     }
 
-    protected static void showScheduleImpl(Context context, ScheduleMode mode, ScheduleType type, Group group) {
+    protected static void showScheduleImpl(Context context, ScheduleMode mode, ScheduleType type, Group group, Date currentTime) {
         Intent intent = new Intent(context, ScheduleActivity.class);
         intent.putExtra(ScheduleActivity.ARG_ID, group.getId());
         intent.putExtra(ScheduleActivity.ARG_TYPE, type);
         intent.putExtra(ScheduleActivity.ARG_MODE, mode);
+        intent.putExtra(ScheduleActivity.ARG_DATE, getFormattedDate(currentTime));
         context.startActivity(intent);
     }
 
@@ -135,10 +135,6 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
-    private void initTime() {
-        time.setText(getFormattedTimeDate());
-    }
-
     protected static String getFormattedTimeDate() {
         Date currentTime = new Date();
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", new Locale("ru", "RU"));
@@ -149,6 +145,14 @@ public class StudentActivity extends AppCompatActivity {
         formattedDate = formattedDate.substring(0, 1).toUpperCase() + formattedDate.substring(1).toLowerCase();
 
         return formattedTime + ", " + formattedDate;
+    }
+
+    private static String getFormattedDate(Date currentTime) {
+        if (currentTime == null) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.forLanguageTag("ru"));
+        return simpleDateFormat.format(currentTime);
     }
 
     private void initData() {

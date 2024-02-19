@@ -11,11 +11,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class TeacherActivity extends AppCompatActivity {
+public class TeacherActivity extends BaseActivity {
     private static final String LOG_TAG = "LOG_TAG";
-    private TextView time;
     private TextView status;
     private TextView subject;
     private TextView cabinet;
@@ -70,16 +70,12 @@ public class TeacherActivity extends AppCompatActivity {
         if (!(selectedItem instanceof StudentActivity.Group)) {
             return;
         }
-        StudentActivity.showScheduleImpl(this, ScheduleMode.TEACHER, scheduleType, (StudentActivity.Group) selectedItem);
+        StudentActivity.showScheduleImpl(this, ScheduleMode.TEACHER, scheduleType, (StudentActivity.Group) selectedItem, currentTime);
     }
 
     protected static void initGroupList(List<StudentActivity.Group> groups) {
         groups.add(new StudentActivity.Group(1, "Преподаватель 1"));
         groups.add(new StudentActivity.Group(2, "Преподаватель 2"));
-    }
-
-    private void initTime() {
-        time.setText(StudentActivity.getFormattedTimeDate());
     }
 
     private void initData() {

@@ -12,17 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ScheduleActivity extends BaseActivity {
+public class ScheduleActivity extends AppCompatActivity {
 
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_TYPE = "ARG_TYPE";
     public static final String ARG_MODE = "ARG_MODE";
+    public static final String ARG_DATE = "ARG_DATE";
     public static final Integer DEFAULT_ID = -1;
 
     private ScheduleType type;
     private ScheduleMode mode;
     private Integer id;
     private TextView title;
+    private String date;
 
     RecyclerView recyclerView;
     ItemAdapter adapter;
@@ -35,12 +37,9 @@ public class ScheduleActivity extends BaseActivity {
         type = (ScheduleType) getIntent().getSerializableExtra(ARG_TYPE);
         mode = (ScheduleMode) getIntent().getSerializableExtra(ARG_MODE);
         id = getIntent().getIntExtra(ARG_ID, DEFAULT_ID);
+        date = getIntent().getStringExtra(ARG_DATE);
 
         title = findViewById(R.id.scheduleTitle);
-        time = findViewById(R.id.scheduleTime);
-
-        initTime();
-        setTitle();
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -48,6 +47,7 @@ public class ScheduleActivity extends BaseActivity {
         adapter = new ItemAdapter(this::onScheduleItemClick);
         recyclerView.setAdapter(adapter);
 
+        setTitle();
         initData();
     }
 
@@ -82,7 +82,7 @@ public class ScheduleActivity extends BaseActivity {
         List<ScheduleItem> list = new ArrayList<>();
 
         ScheduleItemHeader header = new ScheduleItemHeader();
-        header.setTitle(getFormattedDate());
+        header.setTitle(date);
         list.add(header);
 
         ScheduleItem item = new ScheduleItem();
