@@ -21,12 +21,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.onItemClick = onItemClick;
 
-        start = itemView.findViewById(R.id.start);
-        end = itemView.findViewById(R.id.end);
-        type = itemView.findViewById(R.id.type);
-        name = itemView.findViewById(R.id.name);
-        place = itemView.findViewById(R.id.place);
-        teacher = itemView.findViewById(R.id.teacher);
+        start = itemView.findViewById(R.id.itemStart);
+        end = itemView.findViewById(R.id.itemEnd);
+        type = itemView.findViewById(R.id.itemType);
+        name = itemView.findViewById(R.id.itemName);
+        place = itemView.findViewById(R.id.itemPlace);
+        teacher = itemView.findViewById(R.id.itemTeacher);
 
     }
 
@@ -40,21 +40,4 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
-
-public class ViewHolderHeader extends RecyclerView.ViewHolder {
-    private Context context;
-    private OnItemClick onItemClick;
-    private TextView title;
-
-    public ViewHolderHeader(View itemView, Context context, OnItemClick onItemClick) {
-        super(itemView);
-        this.context = context;
-        this.onItemClick = onItemClick;
-        title = itemView.findViewById(R.id.title);
-    }
-
-    public void bind(final ScheduleItemHeader data) {
-        title.setText(data.getTitle());
-    }
-}
 
