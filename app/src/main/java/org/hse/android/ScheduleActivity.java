@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends BaseActivity {
 
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_TYPE = "ARG_TYPE";
@@ -37,6 +37,7 @@ public class ScheduleActivity extends AppCompatActivity {
         id = getIntent().getIntExtra(ARG_ID, DEFAULT_ID);
 
         title = findViewById(R.id.scheduleTitle);
+        time = findViewById(R.id.scheduleTime);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,15 +47,16 @@ public class ScheduleActivity extends AppCompatActivity {
 
         initData();
         setTitle();
+        initTime();
     }
 
     private void setTitle() {
         String groupName = "";
-        if (mode == ScheduleMode.TEACHER) {
+        if (mode == ScheduleMode.STUDENT) {
             List<StudentActivity.Group> groups = new ArrayList<>();
             StudentActivity.initGroupList(groups);
             groupName = getGroupNameById(groups);
-        } else if (mode == ScheduleMode.STUDENT) {
+        } else if (mode == ScheduleMode.TEACHER) {
             List<StudentActivity.Group> groups = new ArrayList<>();
             TeacherActivity.initGroupList(groups);
             groupName = getGroupNameById(groups);
