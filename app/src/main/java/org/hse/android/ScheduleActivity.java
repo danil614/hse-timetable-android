@@ -94,13 +94,15 @@ public class ScheduleActivity extends AppCompatActivity {
     private void initData() {
         List<ScheduleItem> list = new ArrayList<>();
 
-        ScheduleItemHeader header = new ScheduleItemHeader();
-        header.setTitle(getFormattedDate(date));
-        list.add(header);
+        ScheduleItemHeader header;
         ScheduleItem item;
 
         switch (type) {
             case DAY:
+                header = new ScheduleItemHeader();
+                header.setTitle(getFormattedDate(date));
+                list.add(header);
+
                 item = new ScheduleItem();
                 item.setStart("10:00");
                 item.setEnd("11:00");
@@ -121,6 +123,11 @@ public class ScheduleActivity extends AppCompatActivity {
 
                 break;
             case WEEK:
+                // Понедельник
+                header = new ScheduleItemHeader();
+                header.setTitle("понедельник, 26 февраля");
+                list.add(header);
+
                 item = new ScheduleItem();
                 item.setStart("09:00");
                 item.setEnd("10:30");
@@ -146,6 +153,43 @@ public class ScheduleActivity extends AppCompatActivity {
                 item.setName("Математика");
                 item.setPlace("Ауд. 201, ул. Ломоносова, д.5");
                 item.setTeacher("Ст.преп. Сидорова Ольга Николаевна");
+                list.add(item);
+
+                // Вторник
+                header = new ScheduleItemHeader();
+                header.setTitle("вторник, 27 февраля");
+                list.add(header);
+
+                item = new ScheduleItem();
+                item.setStart("09:00");
+                item.setEnd("10:30");
+                item.setType("Лекция");
+                item.setName("Физика");
+                item.setPlace("Ауд. 101, ул. Ломоносова, д.5");
+                item.setTeacher("Проф. Смирнов Андрей Владимирович");
+                list.add(item);
+
+                item = new ScheduleItem();
+                item.setStart("11:00");
+                item.setEnd("12:30");
+                item.setType("Лабораторная работа");
+                item.setName("Химия");
+                item.setPlace("Ауд. 201, ул. Ломоносова, д.5");
+                item.setTeacher("Доц. Козлова Мария Ивановна");
+                list.add(item);
+
+                // Среда
+                header = new ScheduleItemHeader();
+                header.setTitle("среда, 28 февраля");
+                list.add(header);
+
+                item = new ScheduleItem();
+                item.setStart("14:00");
+                item.setEnd("15:30");
+                item.setType("Семинар");
+                item.setName("Биология");
+                item.setPlace("Ауд. 301, ул. Ломоносова, д.5");
+                item.setTeacher("Ст.преп. Никитина Елена Сергеевна");
                 list.add(item);
 
                 break;
