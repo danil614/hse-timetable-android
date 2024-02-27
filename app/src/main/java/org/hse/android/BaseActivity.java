@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
                 parseResponse(response);
             }
 
@@ -55,8 +55,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
         currentTime = dateTime;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm, EEEE", Locale.forLanguageTag("ru"));
-        time.setText(simpleDateFormat.format(currentTime));
+        String formattedTimeDate = getFormattedTimeDate(currentTime);
+        time.setText(formattedTimeDate);
+    }
+
+    protected static String getFormattedTimeDate(Date currentTime) {
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("ru"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", Locale.forLanguageTag("ru"));
+
+        String formattedTime = simpleTimeFormat.format(currentTime);
+        String formattedDate = simpleDateFormat.format(currentTime);
+        formattedDate = formattedDate.substring(0, 1).toUpperCase() + formattedDate.substring(1).toLowerCase();
+
+        return formattedTime + ", " + formattedDate;
     }
 
     private void parseResponse(Response response) {

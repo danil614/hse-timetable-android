@@ -1,8 +1,5 @@
 package org.hse.android;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class StudentActivity extends BaseActivity {
     private static final String LOG_TAG = "LOG_TAG";
@@ -83,7 +80,7 @@ public class StudentActivity extends BaseActivity {
         intent.putExtra(ScheduleActivity.ARG_ID, group.getId());
         intent.putExtra(ScheduleActivity.ARG_TYPE, type);
         intent.putExtra(ScheduleActivity.ARG_MODE, mode);
-        intent.putExtra(ScheduleActivity.ARG_DATE, getFormattedDate(currentTime));
+        intent.putExtra(ScheduleActivity.ARG_DATE, currentTime);
         context.startActivity(intent);
     }
 
@@ -133,26 +130,6 @@ public class StudentActivity extends BaseActivity {
                 }
             }
         }
-    }
-
-    protected static String getFormattedTimeDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", new Locale("ru", "RU"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", new Locale("ru", "RU"));
-
-        String formattedTime = simpleTimeFormat.format(currentTime);
-        String formattedDate = simpleDateFormat.format(currentTime);
-        formattedDate = formattedDate.substring(0, 1).toUpperCase() + formattedDate.substring(1).toLowerCase();
-
-        return formattedTime + ", " + formattedDate;
-    }
-
-    private static String getFormattedDate(Date currentTime) {
-        if (currentTime == null) {
-            return "";
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.forLanguageTag("ru"));
-        return simpleDateFormat.format(currentTime);
     }
 
     private void initData() {

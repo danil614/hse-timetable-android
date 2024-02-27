@@ -8,10 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TeacherActivity extends BaseActivity {
