@@ -9,6 +9,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.hse.android.schedulefiles.ItemAdapter;
+import org.hse.android.schedulefiles.ScheduleItem;
+import org.hse.android.schedulefiles.ScheduleItemHeader;
+import org.hse.android.schedulefiles.ScheduleMode;
+import org.hse.android.schedulefiles.ScheduleType;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

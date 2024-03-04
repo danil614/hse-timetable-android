@@ -1,4 +1,4 @@
-package org.hse.android;
+package org.hse.android.schedulefiles;
 
 public class ScheduleItem {
     public String start;

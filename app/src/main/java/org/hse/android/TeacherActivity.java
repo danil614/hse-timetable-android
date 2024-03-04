@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.hse.android.schedulefiles.ScheduleMode;
+import org.hse.android.schedulefiles.ScheduleType;
+
 import java.util.ArrayList;
 import java.util.List;
 

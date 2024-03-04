@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import org.hse.android.schedulefiles.ScheduleMode;
+import org.hse.android.schedulefiles.ScheduleType;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

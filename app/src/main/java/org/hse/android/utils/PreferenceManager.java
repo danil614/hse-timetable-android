@@ -1,4 +1,4 @@
-package org.hse.android;
+package org.hse.android.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,13 +11,13 @@ public class PreferenceManager {
         sharedPref = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
     }
 
-    void saveValue(String key, String value) {
+    public void saveValue(String key, String value) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
-    String getValue(String key, String defaultValue) {
+    public String getValue(String key, String defaultValue) {
         return sharedPref.getString(key, defaultValue);
     }
 }

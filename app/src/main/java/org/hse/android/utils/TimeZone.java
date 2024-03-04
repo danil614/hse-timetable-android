@@ -1,4 +1,4 @@
-package org.hse.android;
+package org.hse.android.utils;
 
 import com.google.gson.annotations.SerializedName;
 
