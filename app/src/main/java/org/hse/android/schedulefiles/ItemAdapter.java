@@ -18,7 +18,7 @@ public final class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final static int TYPE_HEADER = 1;
 
     private List<ScheduleItem> dataList = new ArrayList<>();
-    private OnItemClick onItemClick;
+    private final OnItemClick onItemClick;
 
     public ItemAdapter(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;

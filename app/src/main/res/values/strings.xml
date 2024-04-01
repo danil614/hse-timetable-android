@@ -24,4 +24,6 @@
     <string name="cabinet">Кабинет</string>
     <string name="corp">Корпус</string>
     <string name="teacher">Преподаватель</string>
+    <string name="lesson_in_progress">Идёт пара</string>
+    <string name="no_lessons">Нет пар</string>
 </resources>

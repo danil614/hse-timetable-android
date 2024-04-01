@@ -10,10 +10,10 @@ public class DateUtils {
         calendar.setTime(currentDate);
 
         // Получаем первый день недели
-        int firstDayOfWeek = calendar.getFirstDayOfWeek();
+        // int firstDayOfWeek = calendar.getFirstDayOfWeek();
 
         // Устанавливаем календарь на первый день недели и начало дня
-        calendar.set(Calendar.DAY_OF_WEEK, firstDayOfWeek);
+        // calendar.set(Calendar.DAY_OF_WEEK, firstDayOfWeek);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);

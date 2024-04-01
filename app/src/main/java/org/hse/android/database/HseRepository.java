@@ -12,11 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 public class HseRepository {
-    private DatabaseManager databaseManager;
     private final HseDao dao;
 
     public HseRepository(Context context) {
-        databaseManager = DatabaseManager.getInstance(context);
+        DatabaseManager databaseManager = DatabaseManager.getInstance(context);
         dao = databaseManager.getHseDao();
     }
 

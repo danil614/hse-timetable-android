@@ -14,7 +14,6 @@ import java.util.Date;
         @ForeignKey(entity = TeacherEntity.class, parentColumns = "id", childColumns = "teacher_id", onDelete = CASCADE)})
 
 public class TimeTableEntity {
-
     @PrimaryKey
     public int id;
 

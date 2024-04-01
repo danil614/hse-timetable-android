@@ -3,12 +3,15 @@ package org.hse.android;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.hse.android.database.entities.TimeTableEntity;
+import org.hse.android.database.entities.TimeTableWithTeacherEntity;
 import org.hse.android.schedulefiles.ItemAdapter;
 import org.hse.android.schedulefiles.ScheduleItem;
 import org.hse.android.schedulefiles.ScheduleItemHeader;
@@ -20,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends BaseActivity {
     private static final String LOG_TAG = "LOG_TAG";
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_TYPE = "ARG_TYPE";
     public static final String ARG_MODE = "ARG_MODE";
+    public static String ARG_NAME = "ARG_NAME";
     public static final String ARG_DATE = "ARG_DATE";
     public static final Integer DEFAULT_ID = -1;
 
@@ -35,9 +38,10 @@ public class ScheduleActivity extends AppCompatActivity {
     private Integer id;
     private TextView title;
     private Date date;
+    private String name;
 
-    RecyclerView recyclerView;
-    ItemAdapter adapter;
+    private ItemAdapter adapter;
+    List<ScheduleItem> listOfScheduleItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,161 +50,108 @@ public class ScheduleActivity extends AppCompatActivity {
 
         type = (ScheduleType) getIntent().getSerializableExtra(ARG_TYPE);
         mode = (ScheduleMode) getIntent().getSerializableExtra(ARG_MODE);
+        name = getIntent().getStringExtra(ARG_NAME);
         id = getIntent().getIntExtra(ARG_ID, DEFAULT_ID);
         date = (Date) getIntent().getSerializableExtra(ARG_DATE);
         Log.i(LOG_TAG, String.valueOf(date));
 
         title = findViewById(R.id.scheduleTitle);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         adapter = new ItemAdapter(this::onScheduleItemClick);
         recyclerView.setAdapter(adapter);
 
-        setTitle();
+        initTitle();
         initData();
-    }
-
-    private void setTitle() {
-        String groupName = "";
-        if (mode == ScheduleMode.STUDENT) {
-            List<StudentActivity.Group> groups = new ArrayList<>();
-            StudentActivity.initGroupList(groups);
-            groupName = getGroupNameById(groups);
-        } else if (mode == ScheduleMode.TEACHER) {
-            List<StudentActivity.Group> groups = new ArrayList<>();
-            TeacherActivity.initGroupList(groups);
-            groupName = getGroupNameById(groups);
-        }
-
-        title.setText(groupName);
-    }
-
-    private String getGroupNameById(List<StudentActivity.Group> groups) {
-        for (StudentActivity.Group group : groups) {
-            if (Objects.equals(group.getId(), id)) {
-                return group.getName();
-            }
-        }
-        return "";
     }
 
     private void onScheduleItemClick(ScheduleItem scheduleItem) {
     }
 
-    private static String getFormattedDate(Date currentTime) {
-        if (currentTime == null) {
-            return "";
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.forLanguageTag("ru"));
-        return simpleDateFormat.format(currentTime);
+    private void initTitle() {
+        title.setText(name);
     }
 
     private void initData() {
-        List<ScheduleItem> list = new ArrayList<>();
+        Observer<List<TimeTableWithTeacherEntity>> observer = timeTableWithTeacherEntities -> {
+            // Создать расписание из timeTableWithTeacherEntities
+            listOfScheduleItems = scheduleBuilder(timeTableWithTeacherEntities);
+            // Прикрепить его к адаптеру
+            adapter.setDataList(listOfScheduleItems);
 
-        ScheduleItemHeader header;
-        ScheduleItem item;
+        };
 
         switch (type) {
-            case DAY:
-                header = new ScheduleItemHeader();
-                header.setTitle(getFormattedDate(date));
-                list.add(header);
-
-                item = new ScheduleItem();
-                item.setStart("10:00");
-                item.setEnd("11:00");
-                item.setType("Практическое занятие");
-                item.setName("Анализ данных (анг)");
-                item.setPlace("Ауд. 503, Кочновский пр-д, д.3");
-                item.setTeacher("Пред. Гущим Михаил Иванович");
-                list.add(item);
-
-                item = new ScheduleItem();
-                item.setStart("12:00");
-                item.setEnd("13:00");
-                item.setType("Практическое занятие");
-                item.setName("Анализ данныx (aнг)");
-                item.setPlace("Ауд. 503, Кочновский пр-д, д.3");
-                item.setTeacher("Пред. Гущим Михаил Иванович");
-                list.add(item);
-
+            case DAY: {
+                mainViewModel.getTimeTableForDay(date, id, mode).observe(this, observer);
                 break;
-            case WEEK:
-                // Понедельник
-                header = new ScheduleItemHeader();
-                header.setTitle("понедельник, 26 февраля");
-                list.add(header);
-
-                item = new ScheduleItem();
-                item.setStart("09:00");
-                item.setEnd("10:30");
-                item.setType("Лекция");
-                item.setName("Информатика");
-                item.setPlace("Ауд. 301, ул. Ломоносова, д.5");
-                item.setTeacher("Проф. Иванова Елена Петровна");
-                list.add(item);
-
-                item = new ScheduleItem();
-                item.setStart("11:00");
-                item.setEnd("12:30");
-                item.setType("Лабораторная работа");
-                item.setName("Программирование");
-                item.setPlace("Ауд. 401, ул. Ломоносова, д.5");
-                item.setTeacher("Доц. Петров Алексей Игоревич");
-                list.add(item);
-
-                item = new ScheduleItem();
-                item.setStart("14:00");
-                item.setEnd("15:30");
-                item.setType("Семинар");
-                item.setName("Математика");
-                item.setPlace("Ауд. 201, ул. Ломоносова, д.5");
-                item.setTeacher("Ст.преп. Сидорова Ольга Николаевна");
-                list.add(item);
-
-                // Вторник
-                header = new ScheduleItemHeader();
-                header.setTitle("вторник, 27 февраля");
-                list.add(header);
-
-                item = new ScheduleItem();
-                item.setStart("09:00");
-                item.setEnd("10:30");
-                item.setType("Лекция");
-                item.setName("Физика");
-                item.setPlace("Ауд. 101, ул. Ломоносова, д.5");
-                item.setTeacher("Проф. Смирнов Андрей Владимирович");
-                list.add(item);
-
-                item = new ScheduleItem();
-                item.setStart("11:00");
-                item.setEnd("12:30");
-                item.setType("Лабораторная работа");
-                item.setName("Химия");
-                item.setPlace("Ауд. 201, ул. Ломоносова, д.5");
-                item.setTeacher("Доц. Козлова Мария Ивановна");
-                list.add(item);
-
-                // Среда
-                header = new ScheduleItemHeader();
-                header.setTitle("среда, 28 февраля");
-                list.add(header);
-
-                item = new ScheduleItem();
-                item.setStart("14:00");
-                item.setEnd("15:30");
-                item.setType("Семинар");
-                item.setName("Биология");
-                item.setPlace("Ауд. 301, ул. Ломоносова, д.5");
-                item.setTeacher("Ст.преп. Никитина Елена Сергеевна");
-                list.add(item);
-
+            }
+            case WEEK: {
+                mainViewModel.getTimeTableForWeek(date, id, mode).observe(this, observer);
                 break;
+            }
+        }
+    }
+
+    private List<ScheduleItem> scheduleBuilder(List<TimeTableWithTeacherEntity> entities) {
+        if (entities == null || entities.isEmpty()) {
+            Toast.makeText(this, R.string.no_lessons, Toast.LENGTH_SHORT).show();
+            return null;
         }
 
-        adapter.setDataList(list);
+        // Для отображения даты
+        SimpleDateFormat headerDateFormat = new SimpleDateFormat("EEEE, dd MMMM", new Locale("ru"));
+        SimpleDateFormat hoursFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
+
+        List<ScheduleItem> list = new ArrayList<>();
+
+        String lastDate = "";
+        String currentDate;
+
+        for (TimeTableWithTeacherEntity entity : entities) {
+            TimeTableEntity timeTableEntity = entity.timeTableEntity;
+
+            // Проверяем, есть ли такой заголовок, если нет, то создаём новый
+            currentDate = headerDateFormat.format(timeTableEntity.timeStart);
+            if (!currentDate.equals(lastDate)) {
+                ScheduleItemHeader header = new ScheduleItemHeader();
+                header.setTitle(headerDateFormat.format(timeTableEntity.timeEnd));
+                list.add(header);
+
+                lastDate = currentDate;
+            }
+
+            String start = hoursFormat.format(timeTableEntity.timeStart);
+            String end = hoursFormat.format(timeTableEntity.timeEnd);
+            String type = getLessonType(timeTableEntity.type);
+            String name = timeTableEntity.subjName;
+            String place = timeTableEntity.cabinet + ", " + timeTableEntity.corp;
+            String teacher_fio = entity.teacherEntity.fio;
+
+            ScheduleItem item = new ScheduleItem();
+            item.setStart(start);
+            item.setEnd(end);
+            item.setType(type);
+            item.setName(name);
+            item.setPlace(place);
+            item.setTeacher(teacher_fio);
+            list.add(item);
+        }
+        return list;
+    }
+
+    public static String getLessonType(int number) {
+        switch (number) {
+            case 0:
+                return "Лекция";
+            case 1:
+                return "Семинар";
+            case 2:
+                return "Практическое занятие";
+            default:
+                return "–";
+        }
     }
 }
