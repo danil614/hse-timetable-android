@@ -53,8 +53,6 @@ public class ScheduleActivity extends BaseActivity {
         name = getIntent().getStringExtra(ARG_NAME);
         id = getIntent().getIntExtra(ARG_ID, DEFAULT_ID);
         date = (Date) getIntent().getSerializableExtra(ARG_DATE);
-        Log.i(LOG_TAG, String.valueOf(date));
-
         title = findViewById(R.id.scheduleTitle);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -96,16 +94,16 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     private List<ScheduleItem> scheduleBuilder(List<TimeTableWithTeacherEntity> entities) {
+        List<ScheduleItem> list = new ArrayList<>();
+
         if (entities == null || entities.isEmpty()) {
             Toast.makeText(this, R.string.no_lessons, Toast.LENGTH_SHORT).show();
-            return null;
+            return list;
         }
 
         // Для отображения даты
         SimpleDateFormat headerDateFormat = new SimpleDateFormat("EEEE, dd MMMM", new Locale("ru"));
         SimpleDateFormat hoursFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
-
-        List<ScheduleItem> list = new ArrayList<>();
 
         String lastDate = "";
         String currentDate;

@@ -75,8 +75,8 @@ public interface HseDao {
     @Transaction
     @Query("SELECT * FROM `time_table` " +
             " WHERE group_id = :group_id " +
-            " AND :start <= time_end " +
-            " AND :end >= time_end" +
+            " AND :start <= time_start " +
+            " AND :end >= time_start" +
             " ORDER BY time_start ASC")
     LiveData<List<TimeTableWithTeacherEntity>> getTimeTableStudentInRange(Date start, Date end, int group_id);
 
@@ -86,8 +86,8 @@ public interface HseDao {
     @Transaction
     @Query("SELECT * FROM `time_table` " +
             " WHERE teacher_id = :teacher_id " +
-            " AND :start <= time_end " +
-            " AND :end >= time_end " +
+            " AND :start <= time_start " +
+            " AND :end >= time_start " +
             " ORDER BY time_start ASC")
     LiveData<List<TimeTableWithTeacherEntity>> getTimeTableTeacherInRange(Date start, Date end, int teacher_id);
 

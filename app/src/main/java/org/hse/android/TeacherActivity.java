@@ -35,25 +35,6 @@ public class TeacherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
 
-        spinner = findViewById(R.id.groupList);
-
-        initGroupList();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent,
-                                       View itemSelected, int selectedItemPosition, long selectedId) {
-                Object item = adapter.getItem(selectedItemPosition);
-                Log.d(LOG_TAG, "selectedItem: " + item);
-                showTime(timeViewModel.dateMutableLiveData.getValue());
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
         time = findViewById(R.id.time);
         status = findViewById(R.id.status);
         subject = findViewById(R.id.subject);
@@ -61,21 +42,36 @@ public class TeacherActivity extends BaseActivity {
         corp = findViewById(R.id.corp);
         teacher = findViewById(R.id.teacher);
 
-        initTime();
-        initData();
-
         View scheduleDay = findViewById(R.id.buttonTimetableDay);
         scheduleDay.setOnClickListener(v -> showSchedule(ScheduleType.DAY));
         View scheduleWeek = findViewById(R.id.buttonTimetableWeek);
         scheduleWeek.setOnClickListener(v -> showSchedule(ScheduleType.WEEK));
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        initGroupList();
+
+        spinner = findViewById(R.id.groupList);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+                showTime(timeViewModel.dateMutableLiveData.getValue());
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        initTime();
     }
 
-    private void showSchedule(ScheduleType type) {
-        Object selectedItem = spinner.getSelectedItem();
-        if (!(selectedItem instanceof Group)) {
+    private void showSchedule(ScheduleType scheduleType) {
+        Group teacher = getSelectedGroup();
+        if (teacher == null) {
             return;
         }
-        showScheduleImpl(ScheduleMode.TEACHER, type, (Group) selectedItem);
+        showScheduleImpl(ScheduleMode.TEACHER, scheduleType, teacher);
     }
 
     private void initGroupList() {
@@ -93,10 +89,6 @@ public class TeacherActivity extends BaseActivity {
         timeViewModel.dateMutableLiveData.observe(this, this::showTime);
     }
 
-    private void initData() {
-        initDataFromTimeTable(null);
-    }
-
     private void initDataFromTimeTable(TimeTableWithTeacherEntity timeTableWithTeacherEntity) {
         if (timeTableWithTeacherEntity == null) {
             status.setText(getString(R.string.status));
@@ -107,10 +99,8 @@ public class TeacherActivity extends BaseActivity {
             return;
         }
 
-        status.setText(R.string.lesson_in_progress);
-
         TimeTableEntity timeTableEntity = timeTableWithTeacherEntity.timeTableEntity;
-
+        status.setText(R.string.lesson_in_progress);
         subject.setText(timeTableEntity.subjName);
         cabinet.setText(timeTableEntity.cabinet);
         corp.setText(timeTableEntity.corp);
