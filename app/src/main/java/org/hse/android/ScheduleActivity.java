@@ -1,7 +1,6 @@
 package org.hse.android;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ScheduleActivity extends BaseActivity {
-    private static final String LOG_TAG = "LOG_TAG";
     public static final String ARG_ID = "ARG_ID";
     public static final String ARG_TYPE = "ARG_TYPE";
     public static final String ARG_MODE = "ARG_MODE";

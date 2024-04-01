@@ -1,7 +1,6 @@
 package org.hse.android;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 public class TeacherActivity extends BaseActivity {
-    private static final String LOG_TAG = "LOG_TAG";
     private TextView status;
     private TextView subject;
     private TextView cabinet;
