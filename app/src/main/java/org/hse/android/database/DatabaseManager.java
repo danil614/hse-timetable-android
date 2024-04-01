@@ -12,19 +12,14 @@ import org.hse.android.database.entities.GroupEntity;
 import org.hse.android.database.entities.TeacherEntity;
 import org.hse.android.database.entities.TimeTableEntity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Executors;
 
 public class DatabaseManager {
     private static final String LOG_TAG = "LOG_TAG";
-    private final SimpleDateFormat dataFormat =
-            new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
     private final DatabaseHelper db;
 
@@ -110,8 +105,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Математика";
         timeTableEntity.corp = "Бульвар Гагарина 37а";
         timeTableEntity.type = 0;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(0, 0, -5));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(0, 0, 30));
+        timeTableEntity.timeStart = getLessonTime(0, 0, -30);
+        timeTableEntity.timeEnd = getLessonTime(0, 0, 30);
         timeTableEntity.groupId = 2;
         timeTableEntity.teacherId = 1;
         timeTables.add(timeTableEntity);
@@ -123,8 +118,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Физика";
         timeTableEntity.corp = "Бульвар Гагарина 37а";
         timeTableEntity.type = 1;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(0, 0, -5));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(0, 0, 30));
+        timeTableEntity.timeStart = getLessonTime(0, 0, -30);
+        timeTableEntity.timeEnd = getLessonTime(0, 0, 30);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 3;
         timeTables.add(timeTableEntity);
@@ -137,8 +132,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "История";
         timeTableEntity.corp = "Студенческая 38";
         timeTableEntity.type = 1;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(1, 2, 0));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(1, 3, 20));
+        timeTableEntity.timeStart = getLessonTime(1, 2, 0);
+        timeTableEntity.timeEnd = getLessonTime(1, 3, 20);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 2;
         timeTables.add(timeTableEntity);
@@ -150,23 +145,10 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Английский язык";
         timeTableEntity.corp = "Студенческая 38";
         timeTableEntity.type = 0;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(1, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(1, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(1, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(1, 5, 0);
         timeTableEntity.groupId = 2;
         timeTableEntity.teacherId = 4;
-        timeTables.add(timeTableEntity);
-
-        timeTableEntity = new TimeTableEntity();
-        timeTableEntity.id = 5;
-        timeTableEntity.cabinet = "Ауд. 110";
-        timeTableEntity.subGroup = "Программная инженерия";
-        timeTableEntity.subjName = "Информационная безопасность";
-        timeTableEntity.corp = "Студенческая 38";
-        timeTableEntity.type = 2;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(1, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(1, 5, 0));
-        timeTableEntity.groupId = 1;
-        timeTableEntity.teacherId = 1;
         timeTables.add(timeTableEntity);
 
         timeTableEntity = new TimeTableEntity();
@@ -176,8 +158,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Программирование на Java";
         timeTableEntity.corp = "ONLINE";
         timeTableEntity.type = 2;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(1, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(1, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(1, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(1, 5, 0);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 3;
         timeTables.add(timeTableEntity);
@@ -189,8 +171,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Математическая логика";
         timeTableEntity.corp = "Студенческая 38";
         timeTableEntity.type = 0;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(1, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(1, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(1, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(1, 5, 0);
         timeTableEntity.groupId = 2;
         timeTableEntity.teacherId = 2;
         timeTables.add(timeTableEntity);
@@ -203,8 +185,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Математический анализ";
         timeTableEntity.corp = "Бульвар Гагарина 37";
         timeTableEntity.type = 1;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(2, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(2, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(2, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(2, 5, 0);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 2;
         timeTables.add(timeTableEntity);
@@ -216,8 +198,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Основы алгоритмизации";
         timeTableEntity.corp = "Бульвар Гагарина 37";
         timeTableEntity.type = 1;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(2, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(2, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(2, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(2, 5, 0);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 3;
         timeTables.add(timeTableEntity);
@@ -229,8 +211,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Теория вероятностей";
         timeTableEntity.corp = "Студенческая 38";
         timeTableEntity.type = 2;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(2, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(2, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(2, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(2, 5, 0);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 4;
         timeTables.add(timeTableEntity);
@@ -242,8 +224,8 @@ public class DatabaseManager {
         timeTableEntity.subjName = "Системное программирование";
         timeTableEntity.corp = "Студенческая 38";
         timeTableEntity.type = 0;
-        timeTableEntity.timeStart = dateFromString(getLessonTime(2, 3, 40));
-        timeTableEntity.timeEnd = dateFromString(getLessonTime(2, 5, 0));
+        timeTableEntity.timeStart = getLessonTime(2, 3, 40);
+        timeTableEntity.timeEnd = getLessonTime(2, 5, 0);
         timeTableEntity.groupId = 1;
         timeTableEntity.teacherId = 5;
         timeTables.add(timeTableEntity);
@@ -251,23 +233,17 @@ public class DatabaseManager {
         DatabaseManager.getInstance(context).getHseDao().insertTimeTable(timeTables);
     }
 
-    private Date dateFromString(String val) {
-        try {
-            return dataFormat.parse(val);
-        } catch (ParseException e) {
-            Log.d(LOG_TAG, "dateFromString ParseException ERROR");
-        }
+    private Date getLessonTime(int days, int hours, int minutes) {
+        // Получаем текущую дату и время
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
 
-        return null;
-    }
+        // Добавляем days дней, hours часов и minutes минут
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        calendar.add(Calendar.MINUTE, minutes);
 
-    private String getLessonTime(int days, int hours, int minutes) {
-        Calendar start = Calendar.getInstance();
-        hours = 24 * days + hours;
-
-        start.add(Calendar.HOUR, hours);
-        start.add(Calendar.MINUTE, minutes);
-
-        return dataFormat.format(start.getTime());
+        // Возвращаем полученное время в виде объекта Date
+        return calendar.getTime();
     }
 }
