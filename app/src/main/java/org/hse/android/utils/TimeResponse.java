@@ -6,6 +6,13 @@ public class TimeResponse {
     @SerializedName("time_zone")
     private TimeZone timeZone;
 
+    @SerializedName("dateTime")
+    private String dateTime;
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
     public TimeZone getTimeZone() {
         return timeZone;
     }

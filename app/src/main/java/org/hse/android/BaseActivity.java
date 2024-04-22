@@ -36,8 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected TimeViewModel timeViewModel;
 
     private static final String LOG_TAG = "LOG_TAG";
-    public static final String URL = "https://api.ipgeolocation.io/ipgeo?apiKey=b03018f75ed94023a005637878ec0977";
-
+    // public static final String URL = "https://api.ipgeolocation.io/ipgeo?apiKey=b03018f75ed94023a005637878ec0977";
+    public static final String URL = "https://www.timeapi.io/api/time/current/zone?timeZone=Asia/Yekaterinburg";
     protected TextView time;
 
     private final OkHttpClient client = new OkHttpClient();
@@ -107,8 +107,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             String json = body.string();
             Log.d(LOG_TAG, json);
             TimeResponse timeResponse = gson.fromJson(json, TimeResponse.class);
-            String currentTimeVal = timeResponse.getTimeZone().getCurrentTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+            //String currentTimeVal = timeResponse.getTimeZone().getCurrentTime();
+            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+            //Date dateTime = simpleDateFormat.parse(currentTimeVal);
+            String currentTimeVal = timeResponse.getDateTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault());
             Date dateTime = simpleDateFormat.parse(currentTimeVal);
 
             runOnUiThread(() -> timeViewModel.dateMutableLiveData.postValue(dateTime));
