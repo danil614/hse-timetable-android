@@ -113,6 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             String currentTimeVal = timeResponse.getDateTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault());
             Date dateTime = simpleDateFormat.parse(currentTimeVal);
+            Log.i(LOG_TAG, "parseResponse" + dateTime);
 
             runOnUiThread(() -> timeViewModel.dateMutableLiveData.postValue(dateTime));
         } catch (IOException | ParseException e) {
