@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
-import org.hse.android.viewmodels.TimeViewModel;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
