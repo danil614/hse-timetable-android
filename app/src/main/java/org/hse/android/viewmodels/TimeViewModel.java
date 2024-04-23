@@ -6,13 +6,23 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import org.hse.android.database.HseRepository;
+
 import java.util.Date;
 
 public class TimeViewModel extends AndroidViewModel {
-    public MutableLiveData<Date> dateMutableLiveData;
+    private final HseRepository repository;
 
     public TimeViewModel(@NonNull Application application) {
         super(application);
-        dateMutableLiveData = new MutableLiveData<>();
+        repository = new HseRepository(application);
+    }
+
+    public void setDateTime() {
+        repository.setDateTime();
+    }
+
+    public Date getDateTime() {
+        return repository.getDateTime().getValue();
     }
 }

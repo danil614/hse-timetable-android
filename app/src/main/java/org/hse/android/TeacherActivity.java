@@ -54,7 +54,7 @@ public class TeacherActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent,
                                        View itemSelected, int selectedItemPosition, long selectedId) {
-                showTime(timeViewModel.dateMutableLiveData.getValue());
+                showTime(timeViewModel.getDateTime());
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -84,7 +84,7 @@ public class TeacherActivity extends BaseActivity {
     }
 
     private void initTime() {
-        timeViewModel.dateMutableLiveData.observe(this, this::showTime);
+        timeViewModel.setDateTime();
     }
 
     private void initDataFromTimeTable(TimeTableWithTeacherEntity timeTableWithTeacherEntity) {
