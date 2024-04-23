@@ -26,7 +26,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         timeViewModel = new ViewModelProvider(this).get(TimeViewModel.class);
-        timeViewModel.setDateTime();
     }
 
     protected void showScheduleImpl(ScheduleMode mode, ScheduleType type, Group group) {

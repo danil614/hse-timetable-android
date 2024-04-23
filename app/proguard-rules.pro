@@ -21,4 +21,3 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class org.hse.android.utils.TimeResponse {*;}
--keep class org.hse.android.utils.TimeZone {*;}
