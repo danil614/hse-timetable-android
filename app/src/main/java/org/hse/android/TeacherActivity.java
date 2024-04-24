@@ -60,8 +60,6 @@ public class TeacherActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        initTime();
     }
 
     private void showSchedule(ScheduleType scheduleType) {
@@ -81,10 +79,7 @@ public class TeacherActivity extends BaseActivity {
             adapter.clear();
             adapter.addAll(groups);
         });
-    }
-
-    private void initTime() {
-        timeViewModel.setDateTime();
+        timeViewModel.getDateTimeMutableLiveData().observe(this, this::showTime);
     }
 
     private void initDataFromTimeTable(TimeTableWithTeacherEntity timeTableWithTeacherEntity) {

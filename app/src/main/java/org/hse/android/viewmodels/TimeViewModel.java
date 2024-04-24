@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import org.hse.android.database.HseRepository;
 
@@ -23,5 +24,9 @@ public class TimeViewModel extends AndroidViewModel {
 
     public Date getDateTime() {
         return repository.getDateTime().getValue();
+    }
+
+    public MutableLiveData<Date> getDateTimeMutableLiveData() {
+        return repository.getDateTime();
     }
 }
